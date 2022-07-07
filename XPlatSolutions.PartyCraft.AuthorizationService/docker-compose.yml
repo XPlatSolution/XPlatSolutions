@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  xplatsolutions.partycraft.authorizationservice:
+    image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftauthorizationservice
+    build:
+      context: .
+      dockerfile: XPlatSolutions.PartyCraft.AuthorizationService/Dockerfile
+    networks:
+      - authnetwork    
+    links:
+      - "mongo:mongolocal"
+    depends_on:
+      - mongo
+    environment:
+      - "Options__ConnectionString=mongodb://admin:XPlatQwerty12@mongo:27017" #TODO
+
+  mongo:
+    container_name: "mongolocal"
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: XPlatQwerty12  
+    networks:
+      - authnetwork
+    ports:
+      - '27018:27018'
+  ##mongodb:
+  ##   image: mongo:latest
+  ##   command: mongod --port 27018
+  ##   ports:
+  ##     - 27018:27018
+  ##   restart: always
+  ##   volumes:
+  ##     - ~/apps/mongo:/data/db
+  ##   environment:
+  ##     - MONGO_INITDB_ROOT_USERNAME=admin #TODO
+  ##     - MONGO_INITDB_ROOT_PASSWORD=XPlatQwerty12 #TODO
+  ##   networks:
+  ##     - authnetwork
+
+
+networks:
+    authnetwork:
+      driver: bridge
