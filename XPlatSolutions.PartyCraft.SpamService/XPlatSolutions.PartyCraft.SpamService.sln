@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.SpamService", "XPlatSolutions.PartyCraft.SpamService\XPlatSolutions.PartyCraft.SpamService.csproj", "{53114425-59AB-42C8-BC82-DFAB681CB8A9}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53114425-59AB-42C8-BC82-DFAB681CB8A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53114425-59AB-42C8-BC82-DFAB681CB8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53114425-59AB-42C8-BC82-DFAB681CB8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53114425-59AB-42C8-BC82-DFAB681CB8A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EED95FA4-BD55-4FC2-B168-622265774E02}
+	EndGlobalSection
+EndGlobal

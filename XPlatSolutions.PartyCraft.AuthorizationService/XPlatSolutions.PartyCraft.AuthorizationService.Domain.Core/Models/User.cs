@@ -13,7 +13,6 @@ public class User
     public string Name { get; set; }
     public string? SecondName { get; set; }
     public string LastName { get; set; }
-    public string Login { get; set; }
     public string RoleId { get; set; }
     [JsonIgnore]
     public string PasswordHash { get; set; }

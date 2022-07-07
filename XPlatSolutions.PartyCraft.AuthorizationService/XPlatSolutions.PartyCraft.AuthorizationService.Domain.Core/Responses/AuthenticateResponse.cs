@@ -10,7 +10,6 @@ public class AuthenticateResponse
     public string Name { get; set; }
     public string LastName { get; set; }
     public string? SecondName { get; set; }
-    public string Login { get; set; }
     public string? Email { get; set; }
     public string? Phone { get; set; }
     [JsonIgnore]
@@ -24,7 +23,6 @@ public class AuthenticateResponse
         this.Name = user.Name;
         this.LastName = user.LastName;
         this.SecondName = user.SecondName;
-        this.Login = user.Login;
         this.Email = user.Email;
         this.Phone = user.Phone;
         this.RoleId = user.RoleId;

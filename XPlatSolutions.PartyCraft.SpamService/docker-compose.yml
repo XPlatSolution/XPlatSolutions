@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  xplatsolutions.partycraft.spamservice:
+    image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftspamservice
+    build:
+      context: .
+      dockerfile: XPlatSolutions.PartyCraft.SpamService/Dockerfile
+    networks:
+      - authnetwork     
+    links:
+      - "rabbitmq3:rabbitmqspam"
+    depends_on:
+      - rabbitmq3   
+
+
+  rabbitmq3:
+    container_name: "rabbitmqspam"
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=XPlatQwerty12
+    ports:
+      - '5672:5672'
+      - '15672:15672'  
+    networks:
+      - authnetwork
+
+
+networks:
+  authnetwork:
+    external:
+      name: authnetwork

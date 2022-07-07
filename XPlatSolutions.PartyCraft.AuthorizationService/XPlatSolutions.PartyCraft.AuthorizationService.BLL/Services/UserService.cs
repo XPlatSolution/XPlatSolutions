@@ -161,7 +161,7 @@ public class UserService : IUserService
 
     private string GenerateResetPasswordMessage(User user, string resetUrl)
     {
-        return $"<br/><br/>Hi {user.Login}! We're sending you this email because you" +
+        return $"<br/><br/>Hi {user.LastName} {user.Name}! We're sending you this email because you" +
                " requested a password reset. Click on this link to create a new password:" +
                " <br/><br/><a href='" + resetUrl + "'>" + "Click me" + "</a><br/><br/>" +
                $" This link will expire in {_appOptions.Value.ResetPasswordInHoursTTL} hours. After that, you'll need " +
@@ -174,20 +174,17 @@ public class UserService : IUserService
         if (request == null)
             throw new XPlatSolutionsException("Payload is required");
 
-        if (!ValidateLogin(request.Email, out var loginError))
-            throw new XPlatSolutionsException(loginError);
+        //if (!ValidateLogin(request.Email, out var loginError))
+        //    throw new XPlatSolutionsException(loginError);
 
         if (!ValidateEmail(request.Email, out var emailError))
             throw new XPlatSolutionsException(emailError);
 
         if (!ValidatePassword(request.Password, out var passwordError))
             throw new XPlatSolutionsException(passwordError);
-
-        if (await _usersAccess.GetUserByLogin(request.Login) != null)
-            throw new XPlatSolutionsException("Login \"" + request.Login + "\" is already taken");
-
+        
         if (await _usersAccess.GetUserByEmail(request.Email) != null)
-            throw new XPlatSolutionsException("Email \"" + request.Login + "\" is already taken");
+            throw new XPlatSolutionsException("Email \"" + request.Email + "\" is already taken");
 
         var userModel = MapRegisterRequestToUser(request);
         var isCreated = await _usersAccess.AddUser(userModel);
@@ -226,7 +223,7 @@ public class UserService : IUserService
             UserId = userModel.Id
         });
 
-        await _queueWriter.WriteEmailMessageTask(userModel.Email, GenerateEmailActivationMessage("", userModel.Login));
+        await _queueWriter.WriteEmailMessageTask(userModel.Email, GenerateEmailActivationMessage("", $"{userModel.LastName} {userModel.Name}"));
     }
 
     private static string GenerateEmailActivationMessage(string verificationUrl, string login)
@@ -367,7 +364,6 @@ public class UserService : IUserService
     {
         return new User
         {
-            Login = request.Login,
             Email = request.Email,
             LastName = request.LastName,
             Name = request.Name,
