@@ -13,15 +13,12 @@ public class User
     public string Name { get; set; }
     public string? SecondName { get; set; }
     public string LastName { get; set; }
-    public string RoleId { get; set; }
     [JsonIgnore]
     public string PasswordHash { get; set; }
     public string? Phone { get; set; }
     public string Email { get; set; }
     public bool EmailVerified { get; set; }
 
-    [BsonIgnore]
-    public Role Role { get; set; }
 
     [BsonIgnore]
     public List<RefreshToken> Tokens { get; set; }

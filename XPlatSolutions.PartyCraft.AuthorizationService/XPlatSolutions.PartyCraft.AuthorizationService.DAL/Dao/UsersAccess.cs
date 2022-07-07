@@ -16,11 +16,11 @@ public class UsersAccess : IUsersAccess
             appOptions.Value.UsersCollectionName);
     }
 
-    public async Task<User?> GetUser(string login, string password)
+    public async Task<User?> GetUser(string email, string password)
     {
         var user = await _usersCollection
             .Find(x =>
-                    x.Login == login)
+                    x.Email == email)
             .FirstOrDefaultAsync();
 
         if (user == null) return null;
@@ -32,12 +32,7 @@ public class UsersAccess : IUsersAccess
     {
         return _usersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
     }
-
-    public Task<User?> GetUserByLogin(string? login)
-    {
-        return _usersCollection.Find(x => x.Login == login).FirstOrDefaultAsync();
-    }
-
+    
     public Task<User?> GetUserByEmail(string? email)
     {
         return _usersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();

@@ -12,8 +12,6 @@ public class AuthenticateResponse
     public string? SecondName { get; set; }
     public string? Email { get; set; }
     public string? Phone { get; set; }
-    [JsonIgnore]
-    public string RoleId { get; set; }
     public string RefreshToken { get; set; }
     public string Token { get; set; }
 
@@ -25,7 +23,6 @@ public class AuthenticateResponse
         this.SecondName = user.SecondName;
         this.Email = user.Email;
         this.Phone = user.Phone;
-        this.RoleId = user.RoleId;
         this.Token = token;
         this.RefreshToken = refreshToken;
     }

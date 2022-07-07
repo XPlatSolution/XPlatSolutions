@@ -34,10 +34,10 @@ public class UserService : IUserService
 
     public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest request, string userIp)
     {
-        var user = await _usersAccess.GetUser(request.Login, request.Password);
+        var user = await _usersAccess.GetUser(request.Email, request.Password);
 
         if (user == null)
-            throw new AuthenticateException("Login or password is incorrect");
+            throw new AuthenticateException("Email or password is incorrect");
 
         var token = _tokenUtils.GenerateToken(user);
         var refreshToken = await _tokenUtils.GenerateRefreshToken(userIp, user.Id);
