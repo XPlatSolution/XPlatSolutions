@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="External\" />
+    <Folder Include="Mail\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XPlatSolutions.PartyCraft.SpamService.Domain.Core\XPlatSolutions.PartyCraft.SpamService.Domain.Core.csproj" />
+  </ItemGroup>
+
+</Project>

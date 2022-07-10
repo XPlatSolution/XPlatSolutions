@@ -7,27 +7,17 @@ services:
       context: .
       dockerfile: XPlatSolutions.PartyCraft.SpamService/Dockerfile
     networks:
-      - authnetwork     
-    links:
-      - "rabbitmq3:rabbitmqspam"
-    depends_on:
-      - rabbitmq3   
-
-
-  rabbitmq3:
-    container_name: "rabbitmqspam"
-    image: rabbitmq:3-management
+      - main_network    
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=XPlatQwerty12
-    ports:
-      - '5672:5672'
-      - '15672:15672'  
-    networks:
-      - authnetwork
+      - "Options__HostName=rabbitmqspam" #TODO
+      - "Options__UserName=admin"
+      - "Options__PasswordRmq=XPlatQwerty12"
 
+      - "Options__EmailFrom=notify@georgespring.com"
+      - "Options__Password=_XPlatQwerty12"
+      - "Options__SmtpHost=smtp.mail.ru"
+      - "Options__SmtpPort=25"
 
 networks:
-  authnetwork:
-    external:
-      name: authnetwork
+  main_network:
+     external: true

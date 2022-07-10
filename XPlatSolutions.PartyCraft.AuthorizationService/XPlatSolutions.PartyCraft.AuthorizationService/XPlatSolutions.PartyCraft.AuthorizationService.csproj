@@ -19,11 +19,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus.RMQ\XPlatSolutions.PartyCraft.EventBus.RMQ.csproj" />
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces\XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.BLL\XPlatSolutions.PartyCraft.AuthorizationService.BLL.csproj" />
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces\XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.csproj" />
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.DAL\XPlatSolutions.PartyCraft.AuthorizationService.DAL.csproj" />
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core\XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

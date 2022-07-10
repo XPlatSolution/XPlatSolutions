@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\XPlatSolutions.PartyCraft.EventBus.Interfaces\XPlatSolutions.PartyCraft.EventBus.Interfaces.csproj" />
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces\XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.csproj" />
   </ItemGroup>
 

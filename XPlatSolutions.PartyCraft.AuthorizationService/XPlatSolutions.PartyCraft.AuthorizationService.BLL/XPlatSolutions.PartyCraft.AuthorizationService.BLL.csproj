@@ -7,6 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\reset.html" />
+    <None Remove="Resources\verify.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\reset.html" />
+    <EmbeddedResource Include="Resources\verify.html" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Resource Include="Resources\reset.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
 
@@ -20,5 +35,6 @@
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces\XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces\XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.csproj" />
   </ItemGroup>
+
 
 </Project>

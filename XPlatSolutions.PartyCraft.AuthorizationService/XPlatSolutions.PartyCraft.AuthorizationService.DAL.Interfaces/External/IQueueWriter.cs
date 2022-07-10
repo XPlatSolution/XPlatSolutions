@@ -2,5 +2,5 @@
 
 public interface IQueueWriter
 {
-    Task WriteEmailMessageTask(string email, string message);
+    void WriteEmailMessageTask(string email, string message, string subject);
 }

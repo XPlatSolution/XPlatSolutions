@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Reflection;
+using System.Text.RegularExpressions;
 using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.Services;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.Dao;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Classes;
@@ -20,6 +21,25 @@ public class UserService : IUserService
     private readonly IActivationCodeAccess _activationCodeAccess;
     private readonly IQueueWriter _queueWriter;
     private readonly IPasswordChangeRequestAccess _passwordChangeRequestAccess;
+
+    private static readonly string ResetHtml =
+        ReadResource("XPlatSolutions.PartyCraft.AuthorizationService.BLL.Resources.reset.html");
+
+    private static readonly string VerifyHtml =
+        ReadResource("XPlatSolutions.PartyCraft.AuthorizationService.BLL.Resources.verify.html");
+
+    private static string ReadResource(string resourceName)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+
+        using var stream = assembly.GetManifestResourceStream(resourceName);
+        if (stream == null) return "";
+
+        using var reader = new StreamReader(stream);
+        var result = reader.ReadToEnd();
+
+        return result;
+    }
 
     public UserService(IUsersAccess usersAccess, IOptions<AppOptions> appOptions, ITokenUtils tokenUtils,
         IActivationCodeAccess activationCodeAccess, IQueueWriter queueWriter, IPasswordChangeRequestAccess passwordChangeRequestAccess)
@@ -60,7 +80,7 @@ public class UserService : IUserService
         var userTokens = await _tokenUtils.GetTokensByUserId(token.UserId);
         var user = await _usersAccess.GetUserById(token.UserId);
 
-        if(user == null)
+        if (user == null)
             throw new AuthenticateException("User does not exist");
 
         if (token.IsRevoked)
@@ -128,7 +148,7 @@ public class UserService : IUserService
 
         var resetPasswordMessage = GenerateResetPasswordMessage(user, resetUrl);
 
-        await _queueWriter.WriteEmailMessageTask(request.Email, resetPasswordMessage);
+        _queueWriter.WriteEmailMessageTask(request.Email, resetPasswordMessage, "Your password reset link");
 
         return new RestorePasswordResponse { Success = true };
     }
@@ -161,12 +181,7 @@ public class UserService : IUserService
 
     private string GenerateResetPasswordMessage(User user, string resetUrl)
     {
-        return $"<br/><br/>Hi {user.LastName} {user.Name}! We're sending you this email because you" +
-               " requested a password reset. Click on this link to create a new password:" +
-               " <br/><br/><a href='" + resetUrl + "'>" + "Click me" + "</a><br/><br/>" +
-               $" This link will expire in {_appOptions.Value.ResetPasswordInHoursTTL} hours. After that, you'll need " +
-               "to submit a new request to reset your password." +
-               " If you didn't request a password reset, you can ignore this email. Your password will not be changed.";
+        return ResetHtml.Replace("@@name@@", $"{user.LastName} {user.Name}").Replace("@@btn@@", resetUrl).Replace("@@hours@@", _appOptions.Value.ResetPasswordInHoursTTL.ToString());
     }
 
     public async Task<RegisterResponse> Register(RegisterRequest? request)
@@ -182,7 +197,7 @@ public class UserService : IUserService
 
         if (!ValidatePassword(request.Password, out var passwordError))
             throw new XPlatSolutionsException(passwordError);
-        
+
         if (await _usersAccess.GetUserByEmail(request.Email) != null)
             throw new XPlatSolutionsException("Email \"" + request.Email + "\" is already taken");
 
@@ -207,7 +222,7 @@ public class UserService : IUserService
         {
             var maxRequest = codes.Max(x => x.CreationDateTime);
 
-            if (maxRequest.AddMinutes(1) < DateTime.UtcNow)
+            if (maxRequest.AddMinutes(1) > DateTime.UtcNow)
                 throw new XPlatSolutionsException("Too many requests, please wait 1 minute");
         }
 
@@ -223,14 +238,12 @@ public class UserService : IUserService
             UserId = userModel.Id
         });
 
-        await _queueWriter.WriteEmailMessageTask(userModel.Email, GenerateEmailActivationMessage("", $"{userModel.LastName} {userModel.Name}"));
+        _queueWriter.WriteEmailMessageTask(userModel.Email, GenerateEmailActivationMessage($"https://georgespring.com/Verify/{activationCode}", $"{userModel.LastName} {userModel.Name}"), "Your activation link");
     }
 
     private static string GenerateEmailActivationMessage(string verificationUrl, string login)
     {
-        return $"<br/><br/>Hi {login}! We are excited to tell you that your account is" +
-               " successfully created. Please click on the below link to verify your account" +
-               " <br/><br/><a href='" + verificationUrl + "'>" + verificationUrl + "</a> ";
+        return VerifyHtml.Replace("@@name@@", login).Replace("@@btn@@", verificationUrl);
     }
 
     private static bool ValidateLogin(string input, out string errorMessage)
@@ -243,7 +256,7 @@ public class UserService : IUserService
         }
 
         var isValid = new Regex(@"^[a-zA-Z][a-zA-Z0-9]{3,12}$");
-        
+
         if (isValid.IsMatch(input)) return true;
         errorMessage = "Login must contain from 3 to 12 characters and consist only of numbers and letters";
         return false;
@@ -359,7 +372,7 @@ public class UserService : IUserService
         await RevokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Value);
         return newRefreshToken;
     }
-    
+
     private static User MapRegisterRequestToUser(RegisterRequest request)
     {
         return new User

@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using XPlatSolutions.PartyCraft.EventBus.Interfaces;
+using XPlatSolutions.PartyCraft.SpamService.DAL.Handlers;
+using XPlatSolutions.PartyCraft.SpamService.Domain.Core.Models;
 
 namespace XPlatSolutions.PartyCraft.SpamService.Controllers
 {
@@ -10,12 +13,10 @@ namespace XPlatSolutions.PartyCraft.SpamService.Controllers
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
+        
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IEventBus eventBus)
         {
-            _logger = logger;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]

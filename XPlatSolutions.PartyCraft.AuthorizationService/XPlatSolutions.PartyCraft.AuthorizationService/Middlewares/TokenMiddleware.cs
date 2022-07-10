@@ -8,12 +8,10 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Middlewares;
 public class TokenMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IOptions<AppOptions> _appOptions;
 
     public TokenMiddleware(RequestDelegate next, IOptions<AppOptions> appOptions)
     {
         _next = next;
-        _appOptions = appOptions;
     }
 
     public async Task Invoke(HttpContext context, IUserService userService, ITokenUtils tokenUtils)

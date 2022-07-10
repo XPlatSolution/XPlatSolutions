@@ -3,9 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.SpamService", "XPlatSolutions.PartyCraft.SpamService\XPlatSolutions.PartyCraft.SpamService.csproj", "{53114425-59AB-42C8-BC82-DFAB681CB8A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.SpamService", "XPlatSolutions.PartyCraft.SpamService\XPlatSolutions.PartyCraft.SpamService.csproj", "{53114425-59AB-42C8-BC82-DFAB681CB8A9}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.SpamService.DAL.Interfaces", "XPlatSolutions.PartyCraft.SpamService.DAL.Interfaces\XPlatSolutions.PartyCraft.SpamService.DAL.Interfaces.csproj", "{9B802A40-A853-4A4D-84E4-B5E76033045E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.SpamService.DAL", "XPlatSolutions.PartyCraft.SpamService.DAL\XPlatSolutions.PartyCraft.SpamService.DAL.csproj", "{2CF794D2-9946-4F72-886D-C604AD838259}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.SpamService.BLL.Interfaces", "XPlatSolutions.PartyCraft.SpamService.BLL.Interfaces\XPlatSolutions.PartyCraft.SpamService.BLL.Interfaces.csproj", "{CEE61F99-D618-44BB-8E77-DED5CAC1A360}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.SpamService.BLL", "XPlatSolutions.PartyCraft.SpamService.BLL\XPlatSolutions.PartyCraft.SpamService.BLL.csproj", "{F17EC078-463D-405C-9405-EFB1475DC8FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.SpamService.Domain.Core", "XPlatSolutions.PartyCraft.SpamService.Domain.Core\XPlatSolutions.PartyCraft.SpamService.Domain.Core.csproj", "{F66D66F8-BCF3-41A8-B4EC-B5CD6BBED8AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{8A135E81-3490-4C9B-ADE7-44E915AC860E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.EventBus.Interfaces", "..\XPlatSolutions.PartyCraft.EventBus.Interfaces\XPlatSolutions.PartyCraft.EventBus.Interfaces.csproj", "{BD0873A3-A4A2-4519-85AA-AC76AD5FBE04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.EventBus", "..\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus.csproj", "{5A767031-5D06-40EC-83F0-961F2B473B8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.EventBus.RMQ", "..\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus.RMQ\XPlatSolutions.PartyCraft.EventBus.RMQ.csproj", "{4349F7ED-E29D-4EC7-86E8-A2D5BAC31ECB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +39,46 @@ Global
 		{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE20F9CC-1F5F-4DB7-A5FA-57771078EC65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B802A40-A853-4A4D-84E4-B5E76033045E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B802A40-A853-4A4D-84E4-B5E76033045E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B802A40-A853-4A4D-84E4-B5E76033045E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B802A40-A853-4A4D-84E4-B5E76033045E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CF794D2-9946-4F72-886D-C604AD838259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CF794D2-9946-4F72-886D-C604AD838259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CF794D2-9946-4F72-886D-C604AD838259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CF794D2-9946-4F72-886D-C604AD838259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE61F99-D618-44BB-8E77-DED5CAC1A360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE61F99-D618-44BB-8E77-DED5CAC1A360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE61F99-D618-44BB-8E77-DED5CAC1A360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE61F99-D618-44BB-8E77-DED5CAC1A360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F17EC078-463D-405C-9405-EFB1475DC8FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F17EC078-463D-405C-9405-EFB1475DC8FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F17EC078-463D-405C-9405-EFB1475DC8FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F17EC078-463D-405C-9405-EFB1475DC8FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66D66F8-BCF3-41A8-B4EC-B5CD6BBED8AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66D66F8-BCF3-41A8-B4EC-B5CD6BBED8AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66D66F8-BCF3-41A8-B4EC-B5CD6BBED8AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66D66F8-BCF3-41A8-B4EC-B5CD6BBED8AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD0873A3-A4A2-4519-85AA-AC76AD5FBE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD0873A3-A4A2-4519-85AA-AC76AD5FBE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD0873A3-A4A2-4519-85AA-AC76AD5FBE04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD0873A3-A4A2-4519-85AA-AC76AD5FBE04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A767031-5D06-40EC-83F0-961F2B473B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A767031-5D06-40EC-83F0-961F2B473B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A767031-5D06-40EC-83F0-961F2B473B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A767031-5D06-40EC-83F0-961F2B473B8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4349F7ED-E29D-4EC7-86E8-A2D5BAC31ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4349F7ED-E29D-4EC7-86E8-A2D5BAC31ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4349F7ED-E29D-4EC7-86E8-A2D5BAC31ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4349F7ED-E29D-4EC7-86E8-A2D5BAC31ECB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BD0873A3-A4A2-4519-85AA-AC76AD5FBE04} = {8A135E81-3490-4C9B-ADE7-44E915AC860E}
+		{5A767031-5D06-40EC-83F0-961F2B473B8F} = {8A135E81-3490-4C9B-ADE7-44E915AC860E}
+		{4349F7ED-E29D-4EC7-86E8-A2D5BAC31ECB} = {8A135E81-3490-4C9B-ADE7-44E915AC860E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EED95FA4-BD55-4FC2-B168-622265774E02}

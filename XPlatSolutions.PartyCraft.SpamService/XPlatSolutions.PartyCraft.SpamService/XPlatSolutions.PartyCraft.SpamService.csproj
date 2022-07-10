@@ -14,4 +14,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus.RMQ\XPlatSolutions.PartyCraft.EventBus.RMQ.csproj" />
+    <ProjectReference Include="..\XPlatSolutions.PartyCraft.SpamService.DAL.Interfaces\XPlatSolutions.PartyCraft.SpamService.DAL.Interfaces.csproj" />
+    <ProjectReference Include="..\XPlatSolutions.PartyCraft.SpamService.DAL\XPlatSolutions.PartyCraft.SpamService.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

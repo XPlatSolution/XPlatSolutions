@@ -17,13 +17,13 @@ public class AuthenticateResponse
 
     public AuthenticateResponse(User user, string token, string refreshToken)
     {
-        this.Id = user.Id;
-        this.Name = user.Name;
-        this.LastName = user.LastName;
-        this.SecondName = user.SecondName;
-        this.Email = user.Email;
-        this.Phone = user.Phone;
-        this.Token = token;
-        this.RefreshToken = refreshToken;
+        Id = user.Id;
+        Name = user.Name;
+        LastName = user.LastName;
+        SecondName = user.SecondName;
+        Email = user.Email;
+        Phone = user.Phone;
+        Token = token;
+        RefreshToken = refreshToken;
     }
 }
