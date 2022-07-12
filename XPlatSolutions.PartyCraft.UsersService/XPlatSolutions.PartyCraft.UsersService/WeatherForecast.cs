@@ -1,4 +1,4 @@
-namespace XPlatSolutions.PartyCraft.SpamService
+namespace XPlatSolutions.PartyCraft.UsersService
 {
     public class WeatherForecast
     {

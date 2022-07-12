@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using XPlatSolutions.PartyCraft.AuthorizationService;
 using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.Services;
@@ -9,6 +10,8 @@ using XPlatSolutions.PartyCraft.AuthorizationService.DAL.External;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.Dao;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.External;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Classes;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Enums;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Interfaces;
 using XPlatSolutions.PartyCraft.AuthorizationService.Middlewares;
 using XPlatSolutions.PartyCraft.EventBus;
 using XPlatSolutions.PartyCraft.EventBus.Interfaces;
@@ -30,19 +33,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<IServiceInfoResolver, ServiceInfoResolver>();
 builder.Services.AddSingleton<IDatabaseResolver, DatabaseResolver>();
 
 builder.Services.AddSingleton<IQueueWriter, QueueWriter>();
 
-builder.Services.AddSingleton<IConnectionFactory>(x=> new ConnectionFactory { HostName = "rabbitmqspam", UserName = "admin", Password = "XPlatQwerty12" }); //TODO
-
 builder.Services.AddSingleton<IScope, HandlerResolver>();
-builder.Services.AddSingleton<IRabbitMqPersistentConnection, DefaultRabbitMqPersistentConnection>();
 builder.Services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
 builder.Services.AddSingleton<IScope, HandlerResolver>();
-
-builder.Services.AddSingleton<IEventBus, EventBusRmq>();
 
 builder.Services.AddSingleton<IPasswordChangeRequestAccess, PasswordChangeRequestAccess>();
 builder.Services.AddSingleton<IActivationCodeAccess, ActivationCodeAccess>();
@@ -51,6 +50,12 @@ builder.Services.AddSingleton<IUsersAccess, UsersAccess>();
 
 builder.Services.AddSingleton<ITokenUtils, TokenUtils>();
 builder.Services.AddSingleton<IUserService, UserService>();
+
+builder.Services.AddSingleton<IEventBusResolver<EventBusTypes>>(x =>
+{
+    var eventBusResolver = new EventBusResolver<EventBusTypes>();
+    return eventBusResolver;
+});
 
 var app = builder.Build();
 
@@ -69,5 +74,37 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseMiddleware<TokenMiddleware>();
 
 app.MapControllers();
+
+var eventBusResolver = app.Services.GetRequiredService<IEventBusResolver<EventBusTypes>>();
+
+var options = app.Services.GetRequiredService<IOptions<AppOptions>>().Value;
+var factorySpam = new ConnectionFactory
+{
+    HostName = options.HostName,
+    UserName = options.UserName,
+    Password = options.PasswordRmq
+};
+
+var factoryAnalytics = new ConnectionFactory
+{
+    HostName = options.AnalyticsHostName,
+    UserName = options.AnalyticsUserName,
+    Password = options.AnalyticsPasswordRmq
+};
+
+var loggerForFactory = app.Services.GetRequiredService<ILogger<DefaultRabbitMqPersistentConnection>>();
+
+var persistentConnectionSpam = new DefaultRabbitMqPersistentConnection(factorySpam, loggerForFactory);
+var persistentConnectionAnalytics = new DefaultRabbitMqPersistentConnection(factoryAnalytics, loggerForFactory);
+
+var logger = app.Services.GetRequiredService<ILogger<EventBusRmq>>();
+var manager = app.Services.GetRequiredService<IEventBusSubscriptionsManager>();
+var scope = app.Services.GetRequiredService<IScope>();
+
+var eventBusSpam = new EventBusRmq(persistentConnectionSpam, logger, manager, scope, "mainqueue", 5);
+var eventBusAnalytics = new EventBusRmq(persistentConnectionAnalytics, logger, manager, scope, "mainqueue", 5);
+
+eventBusResolver.Register(EventBusTypes.SpamBus, eventBusSpam);
+eventBusResolver.Register(EventBusTypes.AnalyticsBus, eventBusAnalytics);
 
 app.Run();

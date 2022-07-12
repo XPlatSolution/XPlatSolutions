@@ -13,6 +13,10 @@ services:
       - "Options__UserName=admin"
       - "Options__PasswordRmq=XPlatQwerty12"
 
+      - "Options__AnalyticsHostName=rabbitmqanalytics" #TODO
+      - "Options__AnalyticsUserName=admin"
+      - "Options__AnalyticsPasswordRmq=XPlatQwerty12"
+
       - "Options__EmailFrom=notify@georgespring.com"
       - "Options__Password=_XPlatQwerty12"
       - "Options__SmtpHost=smtp.mail.ru"

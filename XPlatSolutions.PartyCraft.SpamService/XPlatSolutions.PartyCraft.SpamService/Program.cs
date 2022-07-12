@@ -5,12 +5,12 @@ using XPlatSolutions.PartyCraft.EventBus.Interfaces;
 using XPlatSolutions.PartyCraft.EventBus.RMQ;
 using XPlatSolutions.PartyCraft.EventBus.RMQ.Interfaces;
 using XPlatSolutions.PartyCraft.SpamService;
-using XPlatSolutions.PartyCraft.SpamService.DAL.External;
 using XPlatSolutions.PartyCraft.SpamService.DAL.Handlers;
-using XPlatSolutions.PartyCraft.SpamService.DAL.Interfaces.External;
 using XPlatSolutions.PartyCraft.SpamService.DAL.Interfaces.Mail;
 using XPlatSolutions.PartyCraft.SpamService.DAL.Mail;
 using XPlatSolutions.PartyCraft.SpamService.Domain.Core.Classes;
+using XPlatSolutions.PartyCraft.SpamService.Domain.Core.Enums;
+using XPlatSolutions.PartyCraft.SpamService.Domain.Core.Interfaces;
 using XPlatSolutions.PartyCraft.SpamService.Domain.Core.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,18 +49,12 @@ builder.Services.AddSingleton<IScope, HandlerResolver>();
 builder.Services.AddSingleton<IRabbitMqPersistentConnection, DefaultRabbitMqPersistentConnection>();
 builder.Services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
-builder.Services.AddSingleton<IQueueReader, QueueReader>();
+builder.Services.AddSingleton<IServiceInfoResolver, ServiceInfoResolver>();
 
-builder.Services.AddSingleton<IScope, HandlerResolver>();
-
-builder.Services.AddSingleton<IEventBus>(x =>
+builder.Services.AddSingleton<IEventBusResolver<EventBusTypes>>(x =>
 {
-    var persistentConnection = x.GetRequiredService<IRabbitMqPersistentConnection>();
-    var logger = x.GetRequiredService<ILogger<EventBusRmq>>();
-    var manager = x.GetRequiredService<IEventBusSubscriptionsManager>();
-    var scope = x.GetRequiredService<IScope>();
-    var eventBus = new EventBusRmq(persistentConnection, logger, manager, scope, "mainqueue", 5);
-    return eventBus;
+    var eventBusResolver = new EventBusResolver<EventBusTypes>();
+    return eventBusResolver;
 });
 
 var app = builder.Build();
@@ -78,7 +72,40 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-var eventBus = app.Services.GetRequiredService<IEventBus>();
-eventBus.Subscribe<MessageEvent, SendMessageIntegrationEventHandler>();
+var eventBusResolver = app.Services.GetRequiredService<IEventBusResolver<EventBusTypes>>();
+
+var options = app.Services.GetRequiredService<IOptions<AppOptions>>().Value;
+var factorySpam = new ConnectionFactory
+{
+    HostName = options.HostName,
+    UserName = options.UserName,
+    Password = options.PasswordRmq,
+    DispatchConsumersAsync = true
+};
+
+var factoryAnalytics = new ConnectionFactory
+{
+    HostName = options.AnalyticsHostName,
+    UserName = options.AnalyticsUserName,
+    Password = options.AnalyticsPasswordRmq
+};
+
+var loggerForFactory = app.Services.GetRequiredService<ILogger<DefaultRabbitMqPersistentConnection>>();
+
+var persistentConnectionSpam = new DefaultRabbitMqPersistentConnection(factorySpam, loggerForFactory);
+var persistentConnectionAnalytics = new DefaultRabbitMqPersistentConnection(factoryAnalytics, loggerForFactory);
+
+var logger = app.Services.GetRequiredService<ILogger<EventBusRmq>>();
+var manager = app.Services.GetRequiredService<IEventBusSubscriptionsManager>();
+var scope = app.Services.GetRequiredService<IScope>();
+
+var eventBusSpam = new EventBusRmq(persistentConnectionSpam, logger, manager, scope, "mainqueue", 5);
+var eventBusAnalytics = new EventBusRmq(persistentConnectionAnalytics, logger, manager, scope, "mainqueue", 5);
+
+eventBusResolver.Register(EventBusTypes.SpamBus, eventBusSpam);
+eventBusResolver.Register(EventBusTypes.AnalyticsBus, eventBusAnalytics);
+
+eventBusResolver.Resolve(EventBusTypes.SpamBus)?.Subscribe<MessageEvent, SendMessageIntegrationEventHandler>();
+
 
 app.Run();

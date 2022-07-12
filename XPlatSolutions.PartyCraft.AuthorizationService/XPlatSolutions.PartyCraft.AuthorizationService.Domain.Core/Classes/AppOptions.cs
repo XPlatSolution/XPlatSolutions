@@ -15,4 +15,12 @@ public class AppOptions
     public string Secret { get; set; }
     public string IdSecret { get; set; }
     public bool RemoveOldAndRevokedTokens { get; set; }
+    
+    public string HostName { get; set; }
+    public string UserName { get; set; }
+    public string PasswordRmq { get; set; }
+
+    public string AnalyticsHostName { get; set; }
+    public string AnalyticsUserName { get; set; }
+    public string AnalyticsPasswordRmq { get; set; }
 }

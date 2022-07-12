@@ -14,6 +14,12 @@ services:
       - mongo
     environment:
       - "Options__ConnectionString=mongodb://admin:XPlatQwerty12@mongo:27017" #TODO
+      - "Options__HostName=rabbitmqspam"
+      - "Options__UserName=admin"
+      - "Options__PasswordRmq=XPlatQwerty12"
+      - "Options__AnalyticsHostName=rabbitmqanalytics"
+      - "Options__AnalyticsUserName=admin"
+      - "Options__AnalyticsPasswordRmq=XPlatQwerty12"
 
   mongo:
     container_name: "mongolocal"
