@@ -13,6 +13,7 @@ public class AuthenticateResponse
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string RefreshToken { get; set; }
+    public DateTime BirthdayDateTime { get; set; }
     public string Token { get; set; }
 
     public AuthenticateResponse(User user, string token, string refreshToken)
@@ -21,6 +22,7 @@ public class AuthenticateResponse
         Name = user.Name;
         LastName = user.LastName;
         SecondName = user.SecondName;
+        BirthdayDateTime = user.BirthdayDateTime;
         Email = user.Email;
         Phone = user.Phone;
         Token = token;

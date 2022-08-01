@@ -189,8 +189,6 @@ public class UserService : IUserService
         if (request == null)
             throw new XPlatSolutionsException("Payload is required");
 
-        //if (!ValidateLogin(request.Email, out var loginError))
-        //    throw new XPlatSolutionsException(loginError);
 
         if (!ValidateEmail(request.Email, out var emailError))
             throw new XPlatSolutionsException(emailError);
@@ -382,6 +380,7 @@ public class UserService : IUserService
             Name = request.Name,
             Phone = request.Phone,
             SecondName = request.SecondName,
+            BirthdayDateTime = request.BirthdayDateTime,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             EmailVerified = false,
         };
