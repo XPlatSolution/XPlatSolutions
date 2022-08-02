@@ -74,7 +74,7 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
             return response;
         }
 
-        [ServiceFilter(typeof(Filters.ResultFilter<>))]
+        [ServiceFilter(typeof(Filters.ResultFilterBase))]
         [HttpPost("revoke-token")]
         public async Task<OperationResult> RevokeToken(RevokeTokenRequest? model)
         {

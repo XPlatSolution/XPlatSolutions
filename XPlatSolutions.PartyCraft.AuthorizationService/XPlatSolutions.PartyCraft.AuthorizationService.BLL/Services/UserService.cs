@@ -106,7 +106,7 @@ public class UserService : IUserService
         );
     }
 
-    public async Task<OperationResult> ResendVerificationCode(User user)
+    public async Task<OperationResult> ResendVerificationCode(User? user)
     {
         await SendActivationCode(user);
         return _operationResultFactory.CreateOperationResult();

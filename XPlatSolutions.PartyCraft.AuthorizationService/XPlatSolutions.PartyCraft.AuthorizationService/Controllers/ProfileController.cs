@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.Services;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Classes;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Models;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Requests;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Responses;
 
 namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
 {
@@ -20,11 +22,13 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [AllowAnonymous]
+        [ServiceFilter(typeof(Filters.ResultFilter<RestorePasswordResponse>))]
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+        public async Task<OperationResult<RestorePasswordResponse>> ResetPassword(ResetPasswordRequest request)
         {
             var response = await _userService.RestorePassword(request);
-            return Ok(response);
+
+            return response;
         }
     }
 }

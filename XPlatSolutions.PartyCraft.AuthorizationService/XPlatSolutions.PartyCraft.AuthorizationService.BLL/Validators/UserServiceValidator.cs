@@ -49,7 +49,7 @@ public class UserServiceValidator : IUserService
     {
         var token = await _tokenUtils.GetTokenByValue(refreshToken);
 
-        if (token == null) 
+        if (token == null)
             return _operationResultFactory.CreateOperationResult<AuthenticateResponse>(null, StatusCode.HandledError,
                 "Invalid token");
 
@@ -166,9 +166,12 @@ public class UserServiceValidator : IUserService
         return await _userService.RestorePassword(request);
     }
 
-    public Task<OperationResult> ResendVerificationCode(User user)
+    public async Task<OperationResult> ResendVerificationCode(User? user)
     {
-        return _userService.ResendVerificationCode(user);
+        if (user == null)
+            return _operationResultFactory.CreateOperationResult(StatusCode.HandledError, "User can not be null ");
+
+        return await _userService.ResendVerificationCode(user);
     }
 
     private static bool ValidateEmail(string input, out string errorMessage)

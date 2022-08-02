@@ -33,10 +33,6 @@ services:
     ports:
       - '27018:27018'
 
-#networks:
-#    authnetwork:
-#      driver: bridge
-
 networks:
    main_network:
      external: true

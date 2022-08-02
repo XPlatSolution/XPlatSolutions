@@ -15,5 +15,5 @@ public interface IUserService
     Task<OperationResult> Verify(string verifyCode);
     Task<OperationResult<RestorePasswordResponse>> RestorePasswordRequest(RestorePasswordRequest? request);
     Task<OperationResult<RestorePasswordResponse>> RestorePassword(ResetPasswordRequest? request);
-    Task<OperationResult> ResendVerificationCode(User user);
+    Task<OperationResult> ResendVerificationCode(User? user);
 }

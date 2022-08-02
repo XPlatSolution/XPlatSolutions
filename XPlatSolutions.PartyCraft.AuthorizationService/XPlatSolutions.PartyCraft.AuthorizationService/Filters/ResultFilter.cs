@@ -8,18 +8,8 @@ using XPlatSolutions.PartyCraft.EventBus.Interfaces;
 
 namespace XPlatSolutions.PartyCraft.AuthorizationService.Filters;
 
-public class ResultFilter<T> : IResultFilter
+public class ResultFilterBase : IResultFilter
 {
-
-    private readonly IEventBusResolver<EventBusTypes> _eventBusResolver;
-    private readonly IServiceInfoResolver _serviceInfoResolver;
-
-    public ResultFilter(IEventBusResolver<EventBusTypes> eventBusResolver, IServiceInfoResolver serviceInfoResolver)
-    {
-        _eventBusResolver = eventBusResolver;
-        _serviceInfoResolver = serviceInfoResolver;
-    }
-
     public void OnResultExecuting(ResultExecutingContext context)
     {
         if (context.Result is not ObjectResult { Value: OperationResult result }) return;
@@ -30,19 +20,48 @@ public class ResultFilter<T> : IResultFilter
             return;
         }
 
-        if (result is OperationResult<T> genericResult)
+        var data = GetAdditionalResult(result);
+        if (data != null)
         {
-            context.Result = genericResult.Result != null
-                ? new JsonResult(genericResult.Result)
-                : new JsonResult(new { success = true });
+            context.Result = data;
             return;
         }
 
         context.Result = new JsonResult(new { success = true });
     }
 
+    public virtual IActionResult? GetAdditionalResult(OperationResult result)
+    {
+        return null;
+    }
+
     public void OnResultExecuted(ResultExecutedContext context)
     {
+    }
+}
+
+public class ResultFilter<T> : ResultFilterBase
+{
+    private readonly IEventBusResolver<EventBusTypes> _eventBusResolver;
+    private readonly IServiceInfoResolver _serviceInfoResolver;
+
+    public ResultFilter(IEventBusResolver<EventBusTypes> eventBusResolver, IServiceInfoResolver serviceInfoResolver)
+    {
+        _eventBusResolver = eventBusResolver;
+        _serviceInfoResolver = serviceInfoResolver;
+    }
+    
+
+    public override IActionResult? GetAdditionalResult(OperationResult result)
+    {
+        if (result is OperationResult<T> genericResult)
+        {
+            return genericResult.Result != null
+                ? new JsonResult(genericResult.Result)
+                : new JsonResult(new { success = true });
+            ;
+        }
+        return null;
     }
 
     private static void PublishExceptionMessage(string error, IEventBusResolver<EventBusTypes> eventBusResolver, IServiceInfoResolver serviceInfoResolver, bool isCritical)
