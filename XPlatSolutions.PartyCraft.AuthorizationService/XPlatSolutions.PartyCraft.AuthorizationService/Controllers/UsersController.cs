@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Classes;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Enums;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Models;
+using XPlatSolutions.PartyCraft.EventBus.Interfaces;
 
 namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
 {
     [Filters.Authorize]
+    [ServiceFilter(typeof(Filters.ResultFilter))]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -25,73 +29,82 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(AuthenticateRequest request)
+        public async Task<OperationResult> Authenticate(AuthenticateRequest request)
         {
             var response = await _userService.Authenticate(request, GetUserIp());
-            SetTokenCookie(response.RefreshToken);
-            return Ok(response);
+
+            if(response.Result!= null)
+                SetTokenCookie(response.Result.RefreshToken);
+
+            return response;
         }
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<OperationResult> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"] ?? string.Empty;
             var response = await _userService.RefreshToken(refreshToken, GetUserIp());
-            SetTokenCookie(response.RefreshToken);
-            return Ok(response);
+            
+            if (response.Result != null)
+                SetTokenCookie(response.Result.RefreshToken);
+
+            return response;
         }
-        
+
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterRequest? model)
+        public async Task<OperationResult> Register(RegisterRequest? model)
         {
             var response = await _userService.Register(model);
-            return Ok(response);
+            
+            return response;
         }
-        
+
         [AllowAnonymous]
         [HttpPost("restore-password")]
-        public async Task<IActionResult> RestorePassword(RestorePasswordRequest? model)
+        public async Task<OperationResult> RestorePassword(RestorePasswordRequest? model)
         {
             var response = await _userService.RestorePasswordRequest(model);
-            return Ok(response);
+            
+            return response;
         }
-        
+
         [HttpPost("revoke-token")]
-        public async Task<IActionResult> RevokeToken(RevokeTokenRequest? model)
+        public async Task<OperationResult> RevokeToken(RevokeTokenRequest? model)
         {
             var token = model?.Token ?? Request.Cookies["refreshToken"];
+            
+            var result = await _userService.RevokeToken(token ?? "", GetUserIp());
 
-            if (string.IsNullOrEmpty(token))
-                return BadRequest(new { message = "Token is required" });
-
-            await _userService.RevokeToken(token, GetUserIp());
-            return Ok(new { message = "Token revoked" });
+            return result;
         }
 
         [EmailVerifiedRequire]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<OperationResult> GetAll()
         {
-            var users = await _userService.GetAll();
-            return Ok(users);
+            var response = await _userService.GetAll();
+            
+            return response;
         }
 
         [EmailVerifiedRequire]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<OperationResult> GetById(string id)
         {
-            var user = await _userService.GetById(id);
-            return Ok(user);
+            var response = await _userService.GetById(id);
+            
+            return response;
         }
 
         [EmailVerifiedRequire]
         [HttpGet("{id}/refresh-tokens")]
-        public async Task<IActionResult> GetRefreshTokens(string id)
+        public async Task<OperationResult> GetRefreshTokens(string id)
         {
-            var user = await _userService.GetById(id);
-            return Ok(user);
+            var response = await _userService.GetById(id);
+            
+            return response;
         }
 
         private void SetTokenCookie(string token)

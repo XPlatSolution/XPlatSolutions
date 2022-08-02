@@ -20,7 +20,7 @@ public class TokenMiddleware
         var userId = tokenUtils.ValidateToken(token);
         if (userId != null)
         {
-            context.Items["User"] = await userService.GetById(userId);
+            context.Items["User"] = (await userService.GetById(userId)).Result;
         }
 
         await _next(context);

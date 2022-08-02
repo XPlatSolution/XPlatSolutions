@@ -6,14 +6,14 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.Services
 
 public interface IUserService
 {
-    Task<AuthenticateResponse> Authenticate(AuthenticateRequest request, string userIp);
-    Task<AuthenticateResponse> RefreshToken(string refreshToken, string userIp);
-    Task<RegisterResponse> Register(RegisterRequest? request);
-    Task RevokeToken(string refreshToken, string userIp);
-    Task<User?> GetById(string userId);
-    Task<List<User>> GetAll();
-    Task<bool> Verify(string verifyCode);
-    Task<RestorePasswordResponse> RestorePasswordRequest(RestorePasswordRequest? request);
-    Task<RestorePasswordResponse> RestorePassword(ResetPasswordRequest? request);
-    Task ResendVerificationCode(User user);
+    Task<OperationResult<AuthenticateResponse>> Authenticate(AuthenticateRequest request, string userIp);
+    Task<OperationResult<AuthenticateResponse>> RefreshToken(string refreshToken, string userIp);
+    Task<OperationResult<RegisterResponse>> Register(RegisterRequest? request);
+    Task<OperationResult> RevokeToken(string refreshToken, string userIp);
+    Task<OperationResult<User?>> GetById(string userId);
+    Task<OperationResult<List<User>>> GetAll();
+    Task<OperationResult> Verify(string verifyCode);
+    Task<OperationResult<RestorePasswordResponse>> RestorePasswordRequest(RestorePasswordRequest? request);
+    Task<OperationResult<RestorePasswordResponse>> RestorePassword(ResetPasswordRequest? request);
+    Task<OperationResult> ResendVerificationCode(User user);
 }

@@ -8,7 +8,9 @@ using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Responses;
 using Microsoft.Extensions.Options;
 using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.Utils;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.External;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Enums;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Exceptions;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Interfaces;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Models;
 
 namespace XPlatSolutions.PartyCraft.AuthorizationService.BLL.Services;
@@ -21,6 +23,8 @@ public class UserService : IUserService
     private readonly IActivationCodeAccess _activationCodeAccess;
     private readonly IQueueWriter _queueWriter;
     private readonly IPasswordChangeRequestAccess _passwordChangeRequestAccess;
+    private readonly IResponseFactory _responseFactory;
+    private readonly IOperationResultFactory _operationResultFactory;
 
     private static readonly string ResetHtml =
         ReadResource("XPlatSolutions.PartyCraft.AuthorizationService.BLL.Resources.reset.html");
@@ -42,7 +46,8 @@ public class UserService : IUserService
     }
 
     public UserService(IUsersAccess usersAccess, IOptions<AppOptions> appOptions, ITokenUtils tokenUtils,
-        IActivationCodeAccess activationCodeAccess, IQueueWriter queueWriter, IPasswordChangeRequestAccess passwordChangeRequestAccess)
+        IActivationCodeAccess activationCodeAccess, IQueueWriter queueWriter, IPasswordChangeRequestAccess passwordChangeRequestAccess,
+        IResponseFactory responseFactory, IOperationResultFactory operationResultFactory)
     {
         _usersAccess = usersAccess;
         _appOptions = appOptions;
@@ -50,14 +55,13 @@ public class UserService : IUserService
         _activationCodeAccess = activationCodeAccess;
         _queueWriter = queueWriter;
         _passwordChangeRequestAccess = passwordChangeRequestAccess;
+        _responseFactory = responseFactory;
+        _operationResultFactory = operationResultFactory;
     }
 
-    public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest request, string userIp)
+    public async Task<OperationResult<AuthenticateResponse>> Authenticate(AuthenticateRequest request, string userIp)
     {
         var user = await _usersAccess.GetUser(request.Email, request.Password);
-
-        if (user == null)
-            throw new AuthenticateException("Email or password is incorrect");
 
         var token = _tokenUtils.GenerateToken(user);
         var refreshToken = await _tokenUtils.GenerateRefreshToken(userIp, user.Id);
@@ -67,30 +71,26 @@ public class UserService : IUserService
 
         await _tokenUtils.AddToken(refreshToken);
 
-        return new AuthenticateResponse(user, token, refreshToken.Value);
+        return _operationResultFactory.CreateOperationResult(
+            _responseFactory.CreateAuthenticateResponse(user, token, refreshToken.Value)
+            );
     }
 
-    public async Task<AuthenticateResponse> RefreshToken(string refreshToken, string userIp)
+    public async Task<OperationResult<AuthenticateResponse>> RefreshToken(string refreshToken, string userIp)
     {
         var token = await _tokenUtils.GetTokenByValue(refreshToken);
-
-        if (token == null)
-            throw new AuthenticateException("Invalid token");
 
         var userTokens = await _tokenUtils.GetTokensByUserId(token.UserId);
         var user = await _usersAccess.GetUserById(token.UserId);
 
-        if (user == null)
-            throw new AuthenticateException("User does not exist");
-
         if (token.IsRevoked)
         {
             await RevokeAllChildRefreshToken(token, userTokens, $"Attempted reuse of revoked ancestor token: {token.Value}", userIp);
-            throw new AuthenticateException($"Attempted reuse of revoked ancestor token");
-        }
 
-        if (!token.IsActive)
-            throw new AuthenticateException("Token is not active");
+            return _operationResultFactory.CreateOperationResult<AuthenticateResponse>(
+                null, StatusCode.HandledError, "Attempted reuse of revoked ancestor token"
+            );
+        }
 
         var newToken = await RevokeAndRefreshToken(token, userIp);
 
@@ -101,44 +101,30 @@ public class UserService : IUserService
 
         var accessToken = _tokenUtils.GenerateToken(user);
 
-        return new AuthenticateResponse(user, accessToken, newToken.Value);
+        return _operationResultFactory.CreateOperationResult(
+            _responseFactory.CreateAuthenticateResponse(user, accessToken, newToken.Value)
+        );
     }
 
-    public async Task ResendVerificationCode(User user)
+    public async Task<OperationResult> ResendVerificationCode(User user)
     {
         await SendActivationCode(user);
+        return _operationResultFactory.CreateOperationResult();
     }
 
-    public async Task<bool> Verify(string verifyCode)
+    public async Task<OperationResult> Verify(string verifyCode)
     {
         var code = await _activationCodeAccess.GetActivationCode(verifyCode);
-
-        if (code.CreationDateTime.AddMinutes(_appOptions.Value.ActivationCodeMinutesTTL) < DateTime.UtcNow)
-            return false;
 
         await _usersAccess.SetVerified(code.UserId);
         await _activationCodeAccess.RemoveAllActivationCodes(code.UserId);
 
-        return true;
+        return _operationResultFactory.CreateOperationResult();
     }
 
-    public async Task<RestorePasswordResponse> RestorePasswordRequest(RestorePasswordRequest? request)
+    public async Task<OperationResult<RestorePasswordResponse>> RestorePasswordRequest(RestorePasswordRequest? request)
     {
-        if (request == null)
-            throw new XPlatSolutionsException("Payload is required");
-
-        if (request.Email == null)
-            throw new XPlatSolutionsException("Email is required");
-
-        if (!ValidateEmail(request.Email, out var errorMessage))
-        {
-            throw new XPlatSolutionsException(errorMessage);
-        }
-
         var user = await _usersAccess.GetUserByEmail(request.Email);
-
-        if (user == null)
-            throw new XPlatSolutionsException("User with this email does not exist");
 
         var passwordChangeModel = new PasswordChangeRequest { RequestDateTime = DateTime.UtcNow, UserId = user.Id };
         await _passwordChangeRequestAccess.AddPasswordChangeRequests(passwordChangeModel);
@@ -150,24 +136,13 @@ public class UserService : IUserService
 
         _queueWriter.WriteEmailMessageTask(request.Email, resetPasswordMessage, "Your password reset link");
 
-        return new RestorePasswordResponse { Success = true };
+        return _operationResultFactory.CreateOperationResult(
+            _responseFactory.CreateRestorePasswordResponse(true));
     }
 
-    public async Task<RestorePasswordResponse> RestorePassword(ResetPasswordRequest? request)
+    public async Task<OperationResult<RestorePasswordResponse>> RestorePassword(ResetPasswordRequest? request)
     {
-        if (request?.Token == null)
-            throw new XPlatSolutionsException("Token is required");
-
-        if (string.IsNullOrWhiteSpace(request.NewPassword))
-            throw new XPlatSolutionsException("New password is required");
-
-        if (!ValidatePassword(request.NewPassword, out var errorMessage))
-            throw new XPlatSolutionsException(errorMessage);
-
         var id = _tokenUtils.ValidateIdToken(request.Token);
-
-        if (id == null)
-            throw new XPlatSolutionsException("Invalid token");
 
         var passwordChangeRequest = await _passwordChangeRequestAccess.GetPasswordChangeRequest(id);
 
@@ -176,7 +151,8 @@ public class UserService : IUserService
 
         await _usersAccess.ChangePassword(passwordChangeRequest.UserId, BCrypt.Net.BCrypt.HashPassword(request.NewPassword));
 
-        return new RestorePasswordResponse { Success = true };
+        return _operationResultFactory.CreateOperationResult(
+            _responseFactory.CreateRestorePasswordResponse(true));
     }
 
     private string GenerateResetPasswordMessage(User user, string resetUrl)
@@ -184,22 +160,10 @@ public class UserService : IUserService
         return ResetHtml.Replace("@@name@@", $"{user.LastName} {user.Name}").Replace("@@btn@@", resetUrl).Replace("@@hours@@", _appOptions.Value.ResetPasswordInHoursTTL.ToString());
     }
 
-    public async Task<RegisterResponse> Register(RegisterRequest? request)
+    public async Task<OperationResult<RegisterResponse>> Register(RegisterRequest? request)
     {
-        if (request == null)
-            throw new XPlatSolutionsException("Payload is required");
-
-
-        if (!ValidateEmail(request.Email, out var emailError))
-            throw new XPlatSolutionsException(emailError);
-
-        if (!ValidatePassword(request.Password, out var passwordError))
-            throw new XPlatSolutionsException(passwordError);
-
-        if (await _usersAccess.GetUserByEmail(request.Email) != null)
-            throw new XPlatSolutionsException("Email \"" + request.Email + "\" is already taken");
-
         var userModel = MapRegisterRequestToUser(request);
+
         var isCreated = await _usersAccess.AddUser(userModel);
 
         if (!isCreated)
@@ -207,7 +171,8 @@ public class UserService : IUserService
 
         await SendActivationCode(userModel);
 
-        return new RegisterResponse { Success = true };
+        return _operationResultFactory.CreateOperationResult(
+            _responseFactory.CreateRegisterResponse(true));
     }
 
     private async Task SendActivationCode(User userModel)
@@ -244,100 +209,25 @@ public class UserService : IUserService
         return VerifyHtml.Replace("@@name@@", login).Replace("@@btn@@", verificationUrl);
     }
 
-    private static bool ValidateLogin(string input, out string errorMessage)
-    {
-        errorMessage = string.Empty;
-
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            throw new Exception("Login should not be empty");
-        }
-
-        var isValid = new Regex(@"^[a-zA-Z][a-zA-Z0-9]{3,12}$");
-
-        if (isValid.IsMatch(input)) return true;
-        errorMessage = "Login must contain from 3 to 12 characters and consist only of numbers and letters";
-        return false;
-    }
-
-    private static bool ValidateEmail(string input, out string errorMessage)
-    {
-        errorMessage = string.Empty;
-
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            throw new Exception("Email should not be empty");
-        }
-
-        var isValid = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*" + "@" + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$");
-
-
-        if (isValid.IsMatch(input)) return true;
-        errorMessage = "Invalid Email";
-        return false;
-
-    }
-
-    private static bool ValidatePassword(string input, out string errorMessage)
-    {
-        errorMessage = string.Empty;
-
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            throw new Exception("Password should not be empty");
-        }
-
-        var hasNumber = new Regex(@"[0-9]+");
-        var hasUpperChar = new Regex(@"[A-Z]+");
-        var hasMiniMaxChars = new Regex(@".{8,20}");
-        var hasLowerChar = new Regex(@"[a-z]+");
-        var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
-
-        if (!hasLowerChar.IsMatch(input))
-        {
-            errorMessage = "Password should contain at least one lower case letter";
-            return false;
-        }
-
-        if (!hasUpperChar.IsMatch(input))
-        {
-            errorMessage = "Password should contain at least one upper case letter";
-            return false;
-        }
-        if (!hasMiniMaxChars.IsMatch(input))
-        {
-            errorMessage = "Password should not be less than 8 or greater than 12 characters";
-            return false;
-        }
-        if (!hasNumber.IsMatch(input))
-        {
-            errorMessage = "Password should contain at least one numeric value";
-            return false;
-        }
-
-        if (hasSymbols.IsMatch(input)) return true;
-        errorMessage = "Password should contain at least one special case characters";
-        return false;
-    }
-
-    public async Task RevokeToken(string refreshToken, string userIp)
+    public async Task<OperationResult> RevokeToken(string refreshToken, string userIp)
     {
         var token = await _tokenUtils.GetTokenByValue(refreshToken);
 
-        if (token == null || !token.IsActive)
-            throw new AuthenticateException("Invalid token");
-
         await RevokeRefreshToken(token, userIp, "Revoked without replacement");
+
+        return _operationResultFactory.CreateOperationResult();
     }
 
-    public async Task<User?> GetById(string userId)
+    public async Task<OperationResult<User?>> GetById(string userId)
     {
-        return await _usersAccess.GetUserById(userId);
+#pragma warning disable CS8619
+        return _operationResultFactory.CreateOperationResult(await _usersAccess.GetUserById(userId));
+#pragma warning restore CS8619
     }
 
-    public Task<List<User>> GetAll()
+    public async Task<OperationResult<List<User>>> GetAll()
     {
-        return _usersAccess.GetAll();
+        return _operationResultFactory.CreateOperationResult(await _usersAccess.GetAll());
     }
 
     private async Task RevokeAllChildRefreshToken(RefreshToken refreshToken, List<RefreshToken> userTokens, string reason, string ipAddress)
