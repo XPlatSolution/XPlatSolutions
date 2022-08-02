@@ -8,18 +8,16 @@ using XPlatSolutions.PartyCraft.EventBus.Interfaces;
 
 namespace XPlatSolutions.PartyCraft.AuthorizationService.Filters;
 
-public class ResultFilter : IResultFilter
+public class ResultFilter<T> : IResultFilter
 {
 
     private readonly IEventBusResolver<EventBusTypes> _eventBusResolver;
     private readonly IServiceInfoResolver _serviceInfoResolver;
-    private readonly ILogger<ResultFilter> _logger;
 
-    public ResultFilter(IEventBusResolver<EventBusTypes> eventBusResolver, IServiceInfoResolver serviceInfoResolver, ILogger<ResultFilter> logger)
+    public ResultFilter(IEventBusResolver<EventBusTypes> eventBusResolver, IServiceInfoResolver serviceInfoResolver)
     {
         _eventBusResolver = eventBusResolver;
         _serviceInfoResolver = serviceInfoResolver;
-        _logger = logger;
     }
 
     public void OnResultExecuting(ResultExecutingContext context)
@@ -29,13 +27,24 @@ public class ResultFilter : IResultFilter
         if (result.Status != StatusCode.Success)
         {
             context.Result = new JsonResult(new { message = result.Message }) { StatusCode = 400 };
+            return;
         }
+
+        if (result is OperationResult<T> genericResult)
+        {
+            context.Result = genericResult.Result != null
+                ? new JsonResult(genericResult.Result)
+                : new JsonResult(new { success = true });
+            return;
+        }
+
+        context.Result = new JsonResult(new { success = true });
     }
 
     public void OnResultExecuted(ResultExecutedContext context)
     {
     }
-    
+
     private static void PublishExceptionMessage(string error, IEventBusResolver<EventBusTypes> eventBusResolver, IServiceInfoResolver serviceInfoResolver, bool isCritical)
     {
         var msg = new ExceptionMessageEvent

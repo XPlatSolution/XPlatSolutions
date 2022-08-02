@@ -8,12 +8,12 @@ using Microsoft.Extensions.Options;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Classes;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Enums;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Models;
+using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Responses;
 using XPlatSolutions.PartyCraft.EventBus.Interfaces;
 
 namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
 {
     [Filters.Authorize]
-    [ServiceFilter(typeof(Filters.ResultFilter))]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -28,8 +28,9 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [AllowAnonymous]
+        [ServiceFilter(typeof(Filters.ResultFilter<AuthenticateResponse>))]
         [HttpPost("authenticate")]
-        public async Task<OperationResult> Authenticate(AuthenticateRequest request)
+        public async Task<OperationResult<AuthenticateResponse>> Authenticate(AuthenticateRequest request)
         {
             var response = await _userService.Authenticate(request, GetUserIp());
 
@@ -40,8 +41,9 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [AllowAnonymous]
+        [ServiceFilter(typeof(Filters.ResultFilter<AuthenticateResponse>))]
         [HttpPost("refresh-token")]
-        public async Task<OperationResult> RefreshToken()
+        public async Task<OperationResult<AuthenticateResponse>> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"] ?? string.Empty;
             var response = await _userService.RefreshToken(refreshToken, GetUserIp());
@@ -53,8 +55,9 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [AllowAnonymous]
+        [ServiceFilter(typeof(Filters.ResultFilter<RegisterResponse>))]
         [HttpPost("register")]
-        public async Task<OperationResult> Register(RegisterRequest? model)
+        public async Task<OperationResult<RegisterResponse>> Register(RegisterRequest? model)
         {
             var response = await _userService.Register(model);
             
@@ -62,14 +65,16 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [AllowAnonymous]
+        [ServiceFilter(typeof(Filters.ResultFilter<RestorePasswordResponse>))]
         [HttpPost("restore-password")]
-        public async Task<OperationResult> RestorePassword(RestorePasswordRequest? model)
+        public async Task<OperationResult<RestorePasswordResponse>> RestorePassword(RestorePasswordRequest? model)
         {
             var response = await _userService.RestorePasswordRequest(model);
             
             return response;
         }
 
+        [ServiceFilter(typeof(Filters.ResultFilter<>))]
         [HttpPost("revoke-token")]
         public async Task<OperationResult> RevokeToken(RevokeTokenRequest? model)
         {
@@ -81,8 +86,9 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [EmailVerifiedRequire]
+        [ServiceFilter(typeof(Filters.ResultFilter<List<User>>))]
         [HttpGet]
-        public async Task<OperationResult> GetAll()
+        public async Task<OperationResult<List<User>>> GetAll()
         {
             var response = await _userService.GetAll();
             
@@ -90,8 +96,9 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [EmailVerifiedRequire]
+        [ServiceFilter(typeof(Filters.ResultFilter<User>))]
         [HttpGet("{id}")]
-        public async Task<OperationResult> GetById(string id)
+        public async Task<OperationResult<User>> GetById(string id)
         {
             var response = await _userService.GetById(id);
             
@@ -99,8 +106,9 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [EmailVerifiedRequire]
+        [ServiceFilter(typeof(Filters.ResultFilter<User>))]
         [HttpGet("{id}/refresh-tokens")]
-        public async Task<OperationResult> GetRefreshTokens(string id)
+        public async Task<OperationResult<User?>> GetRefreshTokens(string id)
         {
             var response = await _userService.GetById(id);
             

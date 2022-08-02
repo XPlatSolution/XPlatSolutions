@@ -35,7 +35,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ResultFilter>();
+builder.Services.AddSingleton(typeof(ResultFilter<>), typeof(ResultFilter<>));
 builder.Services.AddSingleton<IResponseFactory, ResponseFactory>();
 builder.Services.AddSingleton<IOperationResultFactory, OperationResultFactory>();
 
