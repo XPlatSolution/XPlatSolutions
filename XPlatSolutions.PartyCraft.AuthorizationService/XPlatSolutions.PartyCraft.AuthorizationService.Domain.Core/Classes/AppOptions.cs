@@ -2,6 +2,10 @@
 
 public class AppOptions
 {
+    public bool IsCacheEnabled { get; set; }
+    public string RedisHost { get; set; }
+    public int RedisPort { get; set; }
+    public string RedisPassword { get; set; }
     public string ConnectionString { get; set; }
     public string DatabaseName { get; set; }
     public string ActivationCodeCollectionName { get; set; }
