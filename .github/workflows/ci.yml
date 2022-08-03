@@ -25,10 +25,13 @@ jobs:
         include:
           - dockerfile: ./XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService/Dockerfile
             image: georgespring/analyticsservice
+            context: ./XPlatSolutions.PartyCraft.AnalyticsService/
           - dockerfile: ./XPlatSolutions.PartyCraft.SpamService/XPlatSolutions.PartyCraft.SpamService/Dockerfile
             image: georgespring/spamservice
+            context: ./XPlatSolutions.PartyCraft.SpamService/
           - dockerfile: ./XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService/Dockerfile
             image: georgespring/authorizationservice
+            context: ./XPlatSolutions.PartyCraft.AuthorizationService/
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -51,7 +54,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./
+          context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           #builder: ${{ steps.buildx.outputs.name }}
           push: true
