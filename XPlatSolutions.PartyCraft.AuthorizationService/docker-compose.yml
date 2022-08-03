@@ -1,0 +1,54 @@
+version: '3.4'
+
+services:
+  xplatsolutions.partycraft.authorizationservice:
+    image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftauthorizationservice
+    build:
+      context: .
+      dockerfile: XPlatSolutions.PartyCraft.AuthorizationService/Dockerfile
+    networks:
+      - main_network    
+    links:
+      - "mongo:mongolocal"
+      - "redis:rediscache"
+    depends_on:
+      - mongo
+    environment:
+      - "Options__ConnectionString=mongodb://admin:XPlatQwerty12@mongo:27017" #TODO
+      - "Options__HostName=rabbitmqspam"
+      - "Options__UserName=admin"
+      - "Options__PasswordRmq=XPlatQwerty12"
+      - "Options__AnalyticsHostName=rabbitmqanalytics"
+      - "Options__AnalyticsUserName=admin"
+      - "Options__AnalyticsPasswordRmq=XPlatQwerty12"
+      - "Options__RedisHost=redis"
+      - "Options__RedisPort=6379"
+      - "Options__RedisPassword=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"
+
+  mongo:
+    container_name: "mongolocal"
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: XPlatQwerty12  
+    networks:
+      - main_network
+    ports:
+      - '27018:27018'
+
+  redis:
+    container_name: "rediscache"
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+#    volumes: 
+#      - ./cache:/data
+    networks:
+      - main_network
+
+networks:
+   main_network:
+     external: true

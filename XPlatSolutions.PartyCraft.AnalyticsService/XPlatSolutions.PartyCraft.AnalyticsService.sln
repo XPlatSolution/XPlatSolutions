@@ -1,0 +1,86 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.AnalyticsService", "XPlatSolutions.PartyCraft.AnalyticsService\XPlatSolutions.PartyCraft.AnalyticsService.csproj", "{D846BD7C-232B-46F2-9447-DC0E91915D71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{7C160E22-B6C0-4A76-9D3B-2BF83DB18008}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.EventBus", "..\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus.csproj", "{D7492C42-94B4-42AE-B75C-6A59E37AC424}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.EventBus.RMQ", "..\XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus.RMQ\XPlatSolutions.PartyCraft.EventBus.RMQ.csproj", "{3FE2FFBB-4D3E-4086-B06A-286630179730}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.EventBus.Interfaces", "..\XPlatSolutions.PartyCraft.EventBus.Interfaces\XPlatSolutions.PartyCraft.EventBus.Interfaces.csproj", "{A12061A3-9B67-4BF7-AFC3-6237DDE00AF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.AnalyticsService.DAL", "XPlatSolutions.PartyCraft.AnalyticsService.DAL\XPlatSolutions.PartyCraft.AnalyticsService.DAL.csproj", "{D25180BB-1452-48E1-AC11-AF4CF1157118}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.AnalyticsService.DAL.Interfaces", "XPlatSolutions.PartyCraft.AnalyticsService.DAL.Interfaces\XPlatSolutions.PartyCraft.AnalyticsService.DAL.Interfaces.csproj", "{648D4E1C-7090-45DD-80CB-6080A38ABFF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.AnalyticsService.BLL", "XPlatSolutions.PartyCraft.AnalyticsService.BLL\XPlatSolutions.PartyCraft.AnalyticsService.BLL.csproj", "{5E2C60FC-6EC6-4BD0-AD21-86C170A16E52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.AnalyticsService.BLL.Interfaces", "XPlatSolutions.PartyCraft.AnalyticsService.BLL.Interfaces\XPlatSolutions.PartyCraft.AnalyticsService.BLL.Interfaces.csproj", "{7A9372BE-AE43-4190-A773-192F90DA5F3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.AnalyticsService.Domain.Core", "XPlatSolutions.PartyCraft.AnalyticsService.Domain.Core\XPlatSolutions.PartyCraft.AnalyticsService.Domain.Core.csproj", "{67678BF0-5196-4288-82D0-09B37572FB44}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{261B502E-7173-41EC-9D95-832E03B774EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D846BD7C-232B-46F2-9447-DC0E91915D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D846BD7C-232B-46F2-9447-DC0E91915D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D846BD7C-232B-46F2-9447-DC0E91915D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D846BD7C-232B-46F2-9447-DC0E91915D71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7492C42-94B4-42AE-B75C-6A59E37AC424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7492C42-94B4-42AE-B75C-6A59E37AC424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7492C42-94B4-42AE-B75C-6A59E37AC424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7492C42-94B4-42AE-B75C-6A59E37AC424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FE2FFBB-4D3E-4086-B06A-286630179730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FE2FFBB-4D3E-4086-B06A-286630179730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FE2FFBB-4D3E-4086-B06A-286630179730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FE2FFBB-4D3E-4086-B06A-286630179730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A12061A3-9B67-4BF7-AFC3-6237DDE00AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12061A3-9B67-4BF7-AFC3-6237DDE00AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12061A3-9B67-4BF7-AFC3-6237DDE00AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12061A3-9B67-4BF7-AFC3-6237DDE00AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D25180BB-1452-48E1-AC11-AF4CF1157118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D25180BB-1452-48E1-AC11-AF4CF1157118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D25180BB-1452-48E1-AC11-AF4CF1157118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D25180BB-1452-48E1-AC11-AF4CF1157118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{648D4E1C-7090-45DD-80CB-6080A38ABFF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648D4E1C-7090-45DD-80CB-6080A38ABFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648D4E1C-7090-45DD-80CB-6080A38ABFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648D4E1C-7090-45DD-80CB-6080A38ABFF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E2C60FC-6EC6-4BD0-AD21-86C170A16E52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E2C60FC-6EC6-4BD0-AD21-86C170A16E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E2C60FC-6EC6-4BD0-AD21-86C170A16E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E2C60FC-6EC6-4BD0-AD21-86C170A16E52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9372BE-AE43-4190-A773-192F90DA5F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9372BE-AE43-4190-A773-192F90DA5F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9372BE-AE43-4190-A773-192F90DA5F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9372BE-AE43-4190-A773-192F90DA5F3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67678BF0-5196-4288-82D0-09B37572FB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67678BF0-5196-4288-82D0-09B37572FB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67678BF0-5196-4288-82D0-09B37572FB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67678BF0-5196-4288-82D0-09B37572FB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{261B502E-7173-41EC-9D95-832E03B774EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{261B502E-7173-41EC-9D95-832E03B774EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{261B502E-7173-41EC-9D95-832E03B774EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{261B502E-7173-41EC-9D95-832E03B774EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7492C42-94B4-42AE-B75C-6A59E37AC424} = {7C160E22-B6C0-4A76-9D3B-2BF83DB18008}
+		{3FE2FFBB-4D3E-4086-B06A-286630179730} = {7C160E22-B6C0-4A76-9D3B-2BF83DB18008}
+		{A12061A3-9B67-4BF7-AFC3-6237DDE00AF6} = {7C160E22-B6C0-4A76-9D3B-2BF83DB18008}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DFDC9B8A-CE73-4AB7-8133-F5A86BC946DD}
+	EndGlobalSection
+EndGlobal

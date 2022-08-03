@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XPlatSolutions.PartyCraft.AnalyticsService.BLL.Interfaces\XPlatSolutions.PartyCraft.AnalyticsService.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\XPlatSolutions.PartyCraft.AnalyticsService.DAL.Interfaces\XPlatSolutions.PartyCraft.AnalyticsService.DAL.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

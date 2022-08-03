@@ -1,0 +1,27 @@
+version: '3.4'
+
+services: 
+  rabbitmq3:
+    container_name: "rabbitmqspam"
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=XPlatQwerty12
+    ports:
+      - '5672:5672'
+      - '15672:15672'  
+    networks:
+      - network
+  
+  rabbitmq3analitycs:
+    container_name: "rabbitmqanalytics"
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=XPlatQwerty12
+    networks:
+      - network
+
+networks:
+    network:
+      driver: bridge

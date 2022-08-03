@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  xplatsolutions.partycraft.analyticsservice:
+    image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftanalyticsservice
+    build:
+      context: .
+      dockerfile: XPlatSolutions.PartyCraft.AnalyticsService/Dockerfile
+    networks:
+      - main_network    
+    links:
+      - "mongodb:mongoanalytics"
+    depends_on:
+      - mongodb
+    environment:
+      - "Options__HostName=rabbitmqanalytics" #TODO
+      - "Options__UserName=admin"
+      - "Options__PasswordRmq=XPlatQwerty12"
+      - "Options__ConnectionString=mongodb://admin:XPlatQwerty12@mongodb:27017"
+      
+  mongodb:
+      container_name: "mongoanalytics"
+      image: mongo
+      restart: always
+      environment:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: XPlatQwerty12  
+      networks:
+          - main_network
+
+networks:
+  main_network:
+     external: true

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.EventBus", "XPlatSolutions.PartyCraft.EventBus\XPlatSolutions.PartyCraft.EventBus.csproj", "{F0DCC26C-914E-4473-BB75-33AEC8553D28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.EventBus.RMQ", "XPlatSolutions.PartyCraft.EventBus.RMQ\XPlatSolutions.PartyCraft.EventBus.RMQ.csproj", "{8F349DDF-33D2-4E78-A37E-4F31824C9DCC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0DCC26C-914E-4473-BB75-33AEC8553D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0DCC26C-914E-4473-BB75-33AEC8553D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0DCC26C-914E-4473-BB75-33AEC8553D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0DCC26C-914E-4473-BB75-33AEC8553D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F349DDF-33D2-4E78-A37E-4F31824C9DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F349DDF-33D2-4E78-A37E-4F31824C9DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F349DDF-33D2-4E78-A37E-4F31824C9DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F349DDF-33D2-4E78-A37E-4F31824C9DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10654D7F-E51F-41BD-9500-CB16F9EF4241}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  xplatsolutions.partycraft.spamservice:
+    image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftspamservice
+    build:
+      context: .
+      dockerfile: XPlatSolutions.PartyCraft.SpamService/Dockerfile
+    networks:
+      - main_network    
+    environment:
+      - "Options__HostName=rabbitmqspam" #TODO
+      - "Options__UserName=admin"
+      - "Options__PasswordRmq=XPlatQwerty12"
+
+      - "Options__AnalyticsHostName=rabbitmqanalytics" #TODO
+      - "Options__AnalyticsUserName=admin"
+      - "Options__AnalyticsPasswordRmq=XPlatQwerty12"
+
+      - "Options__EmailFrom=notify@georgespring.com"
+      - "Options__Password=_XPlatQwerty12"
+      - "Options__SmtpHost=smtp.mail.ru"
+      - "Options__SmtpPort=25"
+
+networks:
+  main_network:
+     external: true
