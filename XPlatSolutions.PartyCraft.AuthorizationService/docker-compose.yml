@@ -10,6 +10,7 @@ services:
       - main_network    
     links:
       - "mongo:mongolocal"
+      - "redis:rediscache"
     depends_on:
       - mongo
     environment:
@@ -20,6 +21,9 @@ services:
       - "Options__AnalyticsHostName=rabbitmqanalytics"
       - "Options__AnalyticsUserName=admin"
       - "Options__AnalyticsPasswordRmq=XPlatQwerty12"
+      - "Options__RedisHost=redis"
+      - "Options__RedisPort=6379"
+      - "Options__RedisPassword=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"
 
   mongo:
     container_name: "mongolocal"
@@ -33,9 +37,17 @@ services:
     ports:
       - '27018:27018'
 
-#networks:
-#    authnetwork:
-#      driver: bridge
+  redis:
+    container_name: "rediscache"
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+#    volumes: 
+#      - ./cache:/data
+    networks:
+      - main_network
 
 networks:
    main_network:

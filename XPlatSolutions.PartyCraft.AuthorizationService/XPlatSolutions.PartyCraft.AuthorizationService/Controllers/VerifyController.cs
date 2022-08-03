@@ -21,21 +21,20 @@ namespace XPlatSolutions.PartyCraft.AuthorizationService.Controllers
         }
 
         [HttpGet("resend-activation-code")]
-        public async Task<IActionResult> ResendActivationCode()
+        [ServiceFilter(typeof(Filters.ResultFilterBase))]
+        public async Task<OperationResult> ResendActivationCode()
         {
-            if (HttpContext.Items["User"] is not User user)
-                return Unauthorized();
-
-            await _userService.ResendVerificationCode(user);
-            return Ok(new RegisterResponse { Success = true });
+            var response = await _userService.ResendVerificationCode(HttpContext.Items["User"] as User);
+            return response;
         }
 
         [AllowAnonymous]
+        [ServiceFilter(typeof(Filters.ResultFilterBase))]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<OperationResult> GetById(string id)
         {
             var user = await _userService.Verify(id);
-            return Ok(user);
+            return user;
         }
     }
 }
