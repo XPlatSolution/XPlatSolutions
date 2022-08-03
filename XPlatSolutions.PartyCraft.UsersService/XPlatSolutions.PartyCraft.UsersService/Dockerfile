@@ -8,9 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY [".", "."]
-RUN dotnet restore "XPlatSolutions.PartyCraft.UsersService/XPlatSolutions.PartyCraft.UsersService.csproj"
+RUN dotnet restore "./XPlatSolutions.PartyCraft.UsersService/XPlatSolutions.PartyCraft.UsersService/XPlatSolutions.PartyCraft.UsersService.csproj"
 COPY . .
-WORKDIR "/src/XPlatSolutions.PartyCraft.UsersService"
+WORKDIR "/src/XPlatSolutions.PartyCraft.UsersService/XPlatSolutions.PartyCraft.UsersService"
 RUN dotnet build "XPlatSolutions.PartyCraft.UsersService.csproj" -c Release -o /app/build
 
 FROM build AS publish
