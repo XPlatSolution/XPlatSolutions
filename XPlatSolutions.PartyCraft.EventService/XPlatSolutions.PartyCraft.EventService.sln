@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlatSolutions.PartyCraft.EventService", "XPlatSolutions.PartyCraft.EventService\XPlatSolutions.PartyCraft.EventService.csproj", "{7AAB9506-844E-4395-9D02-8CAEB7899276}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9057F4C7-C880-498F-8ED9-9B285B5514A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.EventService.DAL", "XPlatSolutions.PartyCraft.EventService.DAL\XPlatSolutions.PartyCraft.EventService.DAL.csproj", "{CBC6F06D-A071-4E01-B963-DFA8A46C4348}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.EventService.DAL.Interfaces", "XPlatSolutions.PartyCraft.EventService.DAL.Interfaces\XPlatSolutions.PartyCraft.EventService.DAL.Interfaces.csproj", "{1E419BF8-83DC-4DAF-818C-0A884EC6FB53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.EventService.BLL", "XPlatSolutions.PartyCraft.EventService.BLL\XPlatSolutions.PartyCraft.EventService.BLL.csproj", "{C66EBC05-C570-41C6-9153-A275CE2D0608}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.EventService.BLL.Interfaces", "XPlatSolutions.PartyCraft.EventService.BLL.Interfaces\XPlatSolutions.PartyCraft.EventService.BLL.Interfaces.csproj", "{E5C7ED03-8CF7-4DD0-A816-57D5CDE21E3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPlatSolutions.PartyCraft.EventService.Domain.Core", "XPlatSolutions.PartyCraft.EventService.Domain.Core\XPlatSolutions.PartyCraft.EventService.Domain.Core.csproj", "{61D082BC-341D-4156-97C5-7C45FFAB0EA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AAB9506-844E-4395-9D02-8CAEB7899276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AAB9506-844E-4395-9D02-8CAEB7899276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AAB9506-844E-4395-9D02-8CAEB7899276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AAB9506-844E-4395-9D02-8CAEB7899276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9057F4C7-C880-498F-8ED9-9B285B5514A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9057F4C7-C880-498F-8ED9-9B285B5514A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9057F4C7-C880-498F-8ED9-9B285B5514A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9057F4C7-C880-498F-8ED9-9B285B5514A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBC6F06D-A071-4E01-B963-DFA8A46C4348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC6F06D-A071-4E01-B963-DFA8A46C4348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC6F06D-A071-4E01-B963-DFA8A46C4348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC6F06D-A071-4E01-B963-DFA8A46C4348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E419BF8-83DC-4DAF-818C-0A884EC6FB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E419BF8-83DC-4DAF-818C-0A884EC6FB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E419BF8-83DC-4DAF-818C-0A884EC6FB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E419BF8-83DC-4DAF-818C-0A884EC6FB53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C66EBC05-C570-41C6-9153-A275CE2D0608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66EBC05-C570-41C6-9153-A275CE2D0608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66EBC05-C570-41C6-9153-A275CE2D0608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66EBC05-C570-41C6-9153-A275CE2D0608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5C7ED03-8CF7-4DD0-A816-57D5CDE21E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5C7ED03-8CF7-4DD0-A816-57D5CDE21E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5C7ED03-8CF7-4DD0-A816-57D5CDE21E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5C7ED03-8CF7-4DD0-A816-57D5CDE21E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D082BC-341D-4156-97C5-7C45FFAB0EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D082BC-341D-4156-97C5-7C45FFAB0EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D082BC-341D-4156-97C5-7C45FFAB0EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D082BC-341D-4156-97C5-7C45FFAB0EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADDFDB5B-A6CA-44F2-AE2D-12EA14DD397A}
+	EndGlobalSection
+EndGlobal
