@@ -23,13 +23,13 @@ jobs:
         include:
           - dockerfile: ./XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService/Dockerfile
             image: georgespring/analyticsservice
-            context: ./XPlatSolutions.PartyCraft.AnalyticsService/
+            context: ./XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService/
           - dockerfile: ./XPlatSolutions.PartyCraft.SpamService/XPlatSolutions.PartyCraft.SpamService/Dockerfile
             image: georgespring/spamservice
-            context: ./XPlatSolutions.PartyCraft.SpamService/
+            context: ./XPlatSolutions.PartyCraft.SpamService/XPlatSolutions.PartyCraft.SpamService/
           - dockerfile: ./XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService/Dockerfile
             image: georgespring/authorizationservice
-            context: ./XPlatSolutions.PartyCraft.AuthorizationService/
+            context: ./XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService/
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
