@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService.csproj", "XPlatSolutions.PartyCraft.AnalyticsService/"]
+COPY ["XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService.csproj", "XPlatSolutions.PartyCraft.AnalyticsService/", "./"]
 RUN dotnet restore "XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService.csproj"
 COPY . .
 WORKDIR "/src/XPlatSolutions.PartyCraft.AnalyticsService"

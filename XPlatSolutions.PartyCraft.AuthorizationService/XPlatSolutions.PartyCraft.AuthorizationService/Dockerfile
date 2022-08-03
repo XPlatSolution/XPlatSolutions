@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService.csproj", "XPlatSolutions.PartyCraft.AuthorizationService/"]
+COPY ["XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService.csproj", "XPlatSolutions.PartyCraft.AuthorizationService/", "./"]
 RUN dotnet restore "XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService.csproj"
 COPY . .
 WORKDIR "/src/XPlatSolutions.PartyCraft.AuthorizationService"
