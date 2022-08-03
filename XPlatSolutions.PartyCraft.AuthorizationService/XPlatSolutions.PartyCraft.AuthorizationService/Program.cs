@@ -5,13 +5,16 @@ using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.Services;
 using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Interfaces.Utils;
 using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Services;
 using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Utils;
+using XPlatSolutions.PartyCraft.AuthorizationService.BLL.Validators;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Dao;
+using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Decorators;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.External;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.Dao;
 using XPlatSolutions.PartyCraft.AuthorizationService.DAL.Interfaces.External;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Classes;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Enums;
 using XPlatSolutions.PartyCraft.AuthorizationService.Domain.Core.Interfaces;
+using XPlatSolutions.PartyCraft.AuthorizationService.Filters;
 using XPlatSolutions.PartyCraft.AuthorizationService.Middlewares;
 using XPlatSolutions.PartyCraft.EventBus;
 using XPlatSolutions.PartyCraft.EventBus.Interfaces;
@@ -33,6 +36,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    var appOptions = builder.Configuration.GetSection("Options").Get<AppOptions>();
+    options.Configuration = $"{appOptions.RedisHost}:{appOptions.RedisPort},password={appOptions.RedisPassword}";
+}); 
+
+builder.Services.AddSingleton(typeof(ResultFilter<>), typeof(ResultFilter<>));
+builder.Services.AddSingleton<ResultFilterBase>();
+builder.Services.AddSingleton<IResponseFactory, ResponseFactory>();
+builder.Services.AddSingleton<IOperationResultFactory, OperationResultFactory>();
+
 builder.Services.AddSingleton<IServiceInfoResolver, ServiceInfoResolver>();
 builder.Services.AddSingleton<IDatabaseResolver, DatabaseResolver>();
 
@@ -47,9 +61,11 @@ builder.Services.AddSingleton<IPasswordChangeRequestAccess, PasswordChangeReques
 builder.Services.AddSingleton<IActivationCodeAccess, ActivationCodeAccess>();
 builder.Services.AddSingleton<ITokensAccess, TokensAccess>();
 builder.Services.AddSingleton<IUsersAccess, UsersAccess>();
+builder.Services.Decorate<IUsersAccess, UserAccessDecorator>();
 
 builder.Services.AddSingleton<ITokenUtils, TokenUtils>();
 builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.Decorate<IUserService, UserServiceValidator>();
 
 builder.Services.AddSingleton<IEventBusResolver<EventBusTypes>>(x =>
 {

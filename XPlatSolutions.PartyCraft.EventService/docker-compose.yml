@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  xplatsolutions.partycraft.eventservice:
+    image: ${DOCKER_REGISTRY-}xplatsolutionspartycrafteventservice
+    build:
+      context: .
+      dockerfile: XPlatSolutions.PartyCraft.EventService/Dockerfile
+    networks:
+      - main_network
+
+  mongoevents:
+    container_name: "mongoevents"
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: XPlatQwerty12  
+    networks:
+      - main_network
+
+
+networks:
+   main_network:
+     external: true

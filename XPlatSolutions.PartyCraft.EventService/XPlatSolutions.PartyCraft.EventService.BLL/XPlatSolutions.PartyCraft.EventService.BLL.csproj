@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XPlatSolutions.PartyCraft.EventService.BLL.Interfaces\XPlatSolutions.PartyCraft.EventService.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\XPlatSolutions.PartyCraft.EventService.DAL\XPlatSolutions.PartyCraft.EventService.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
