@@ -21,13 +21,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService/Dockerfile
+          - dockerfile: ./Dockerfile
             image: georgespring/analyticsservice
             context: ./XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService/
-          - dockerfile: ./XPlatSolutions.PartyCraft.SpamService/XPlatSolutions.PartyCraft.SpamService/Dockerfile
+          - dockerfile: ./Dockerfile
             image: georgespring/spamservice
             context: ./XPlatSolutions.PartyCraft.SpamService/XPlatSolutions.PartyCraft.SpamService/
-          - dockerfile: ./XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService/Dockerfile
+          - dockerfile: ./Dockerfile
             image: georgespring/authorizationservice
             context: ./XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService/
 
