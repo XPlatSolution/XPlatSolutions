@@ -4,8 +4,8 @@ services:
   xplatsolutions.partycraft.spamservice:
     image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftspamservice
     build:
-      context: .
-      dockerfile: XPlatSolutions.PartyCraft.SpamService/Dockerfile
+      context: ../
+      dockerfile: XPlatSolutions.PartyCraft.SpamService/XPlatSolutions.PartyCraft.SpamService/Dockerfile
     networks:
       - main_network    
     environment:

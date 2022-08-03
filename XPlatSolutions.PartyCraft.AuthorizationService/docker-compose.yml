@@ -4,8 +4,8 @@ services:
   xplatsolutions.partycraft.authorizationservice:
     image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftauthorizationservice
     build:
-      context: .
-      dockerfile: XPlatSolutions.PartyCraft.AuthorizationService/Dockerfile
+      context: ../
+      dockerfile: XPlatSolutions.PartyCraft.AuthorizationService/XPlatSolutions.PartyCraft.AuthorizationService/Dockerfile
     networks:
       - main_network    
     links:

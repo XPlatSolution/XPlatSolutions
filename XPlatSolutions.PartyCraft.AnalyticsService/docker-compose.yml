@@ -4,8 +4,8 @@ services:
   xplatsolutions.partycraft.analyticsservice:
     image: ${DOCKER_REGISTRY-}xplatsolutionspartycraftanalyticsservice
     build:
-      context: .
-      dockerfile: XPlatSolutions.PartyCraft.AnalyticsService/Dockerfile
+      context: ../
+      dockerfile: XPlatSolutions.PartyCraft.AnalyticsService/XPlatSolutions.PartyCraft.AnalyticsService/Dockerfile
     networks:
       - main_network    
     links:
