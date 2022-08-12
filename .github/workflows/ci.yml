@@ -66,4 +66,4 @@ jobs:
           registry: ${{ secrets.REGISTRY_URL }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-          repository: ${{ matrix.image }}
+          repository: ${{ secrets.REGISTRY_URL }}/${{ matrix.image }}
